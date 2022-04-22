@@ -1,15 +1,20 @@
 export class Transliterator {
 
     private dict: TransliterationDictionary;
+    private wordMatcher: RegExp;
 
-
-    constructor(dictionary: TransliterationDictionary) {
+    constructor(dictionary: TransliterationDictionary, wordMatcher: RegExp = /[\wа-я]+/ig) {
         this.dict = this.massageDictionary(dictionary);
+        this.wordMatcher = wordMatcher;
+    }
+
+    public getHandler() {
+        return this.transliterate.bind(this);
     }
 
     public transliterate(text: string): string {
 
-        return text.replaceAll(/[\wа-я]+/ig, (word) => {
+        return text.replaceAll(this.wordMatcher, (word) => {
 
             if (this.dict.fixed.hasOwnProperty(word.toLowerCase())) return this.dict.fixed[word.toLowerCase()];
 

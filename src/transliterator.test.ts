@@ -1,26 +1,28 @@
-import Transliterator from '.';
+import { Transliterator } from '.';
 import dictionary from './dictionary/bg-lat';
 
-const tl = new Transliterator(dictionary);
+const tl = new Transliterator(dictionary).getHandler();
 
 describe('Transliterator', () => {
-  beforeAll(() => {
-  });
 
   it('Fixed', () => {
-    expect(tl.transliterate('бЪлгария')).toEqual('Bulgaria');
+    expect(tl('бЪлгария')).toEqual('Bulgaria');
+  });
+
+  it('Закона', () => {
+    expect(tl('Централен Балкан')).toEqual('Tsentralen Balkan');
   });
 
   it('Irregular', () => {
-    expect(tl.transliterate('Филхармония')).toEqual('Filharmonia');
-    expect(tl.transliterate('хуй')).toEqual('hui');
+    expect(tl('Филхармония')).toEqual('Filharmonia');
+    expect(tl('хуй')).toEqual('hui');
   });
 
   it('Combination', () => {
-    expect(tl.transliterate('джапанка')).toEqual('dzhapanka');
-    expect(tl.transliterate('дзадзики')).toEqual('dzadziki');
-    expect(tl.transliterate('рошльо')).toEqual('roshlyo');
-    expect(tl.transliterate('йо-йо')).toEqual('yo-yo');
+    expect(tl('джапанка')).toEqual('dzhapanka');
+    expect(tl('дзадзики')).toEqual('dzadziki');
+    expect(tl('рошльо')).toEqual('roshlyo');
+    expect(tl('йо-йо')).toEqual('yo-yo');
   });
 
   it('Text', () => {
@@ -133,6 +135,6 @@ i me darzheshe za vodomera.
 Pripev:/h3/
 ...shte te hvana za vodomera.
 `;
-    expect(tl.transliterate(text)).toEqual(result);
+    expect(tl(text)).toEqual(result);
   });
 });
